@@ -93,6 +93,28 @@ Similar to the __weighted K nearest neighbors__ by the inverse of the distance.
 Minimization is performed by gradient descent. 
 Using initialization with PCA results is preferred as a starting configuration.
 
+__Kernel principal component analysis__
+
+Perhaps the most widely used algorithm for dimensional reduction is kernel PCA. PCA begins by computing the covariance matrix of the m x n matrix $\mathbf{X}$
+
+$$
+\mathbf{C} = \frac{1}{m}\sum_{i=1}^m \mathbf{\Phi}(\mathbf{x_i}) \mathbf{\Phi}(\mathbf{x_i})^T
+$$
+
+Kernel PCA begins by transforming original data into a higher-dimensional space. 
+
+__t-distributed stochastic neighbor embedding (t-SNE)__
+
+A statistical method for visualizing high0dimensional data by giving each data point a location in a two or three-dimensional map. It is based on Stochastic Neighbor Embedding.
+The t-SNE
+
+- How to use t-SNE effectively
+    
+    https://distill.pub/2016/misread-tsne/?_ga=2.135835192.888864733.1531353600-1779571267.1531353600
+
+
+
+
 
 
 
