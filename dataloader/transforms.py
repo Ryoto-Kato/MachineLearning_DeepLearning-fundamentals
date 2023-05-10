@@ -36,34 +36,11 @@ def compute_image_mean_and_std(images):
     :returns: per-channels mean and std; numpy array of shape (C,). 
     """
     mean, std = [], []
-<<<<<<< HEAD
-=======
-    ########################################################################
-    # TODO:                                                                #
-    # Calculate the per-channel mean and standard deviation of the images  #
-    # Hint 1: You can use numpy to calculate the mean and standard         #
-    # deviation.                                                           #
-    #                                                                      #
-    # Hint 2: Make sure that the shapes of the resulting arrays are (C,)   #
-    # and not [1, C], [C, 1] or anything else. Use print(mean.shape) to    #
-    # test yourself.                                                       #
-    ########################################################################
->>>>>>> 35474e45c8fca28cca47cb06def7f17b936e2137
     
     for i in range(3):
         mean.append(np.mean(images[:, :, :, i]))
         std.append(np.std(images[:, :, :, i]))
 
-<<<<<<< HEAD
-=======
-    #print(mean.shape)
-    #print(std.shape)
-    
-
-    ########################################################################
-    #                           END OF YOUR CODE                           #
-    ########################################################################
->>>>>>> 35474e45c8fca28cca47cb06def7f17b936e2137
     return mean, std
 
 
@@ -86,24 +63,9 @@ class NormalizeTransform:
         self.std = std
 
     def __call__(self, images):
-<<<<<<< HEAD
 
         images = (images-self.mean)/self.std
 
-=======
-        ########################################################################
-        # TODO:                                                                #
-        # normalize the given images:                                          #
-        #   - substract the mean of dataset                                    #
-        #   - divide by standard deviation                                     #
-        ########################################################################
-
-        images = (images-self.mean)/self.std
-
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
->>>>>>> 35474e45c8fca28cca47cb06def7f17b936e2137
         return images
 
 
