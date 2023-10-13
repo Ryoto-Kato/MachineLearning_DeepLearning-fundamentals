@@ -312,11 +312,11 @@ __Learning Process__ of perceptron
     - 
 
 $$\vec{w''} = \begin{array}{rcl}w+x_i & \text{if} & y_i = 1 \\ 
-                                w-x_i & \text{if} & y_i = -1 \\\end{array}$$
+                                w-x_i & \text{if} & y_i = -1 \end{array}$$
 
 
 $$\vec{w_0''} = \begin{array}{rcl}w_0+1 & \text{if} & y_i = 1 \\ 
-                                w_0-1 & \text{if} & y_i = -1 \\\end{array}$$
+                                w_0-1 & \text{if} & y_i = -1 \end{array}$$
 
 ## Probabilistic classification
 - yields uncertaintly for every prediction
@@ -355,7 +355,7 @@ $$P(y = 1| \mathbf{x}, \mu, \Sigma, \Pi) = \frac{P(\mathbf{x}| y=1) P(y=1)}{P(\m
 
 where
 $$a = w^T\mathbf{x} + w_{0} $$
-$$w = \Sigma_{MLE}^{-1}(\mu_1^{MLE}- \mu_0^{MLE}) \\ w_{c0} = -\frac{1}{2}\mu_1^{MLE}\Sigma_{MLE}^{-1}\mu_1^{MLE} +\frac{1}{2}\mu_0^{MLE}\Sigma_{MLE}^{-1}\mu_0^{MLE}`+ log\frac{\pi_1}{\pi_0}$$
+$$w = \Sigma_{MLE}^{-1}(\mu_1^{MLE}- \mu_0^{MLE}) \\ w_{c0} = -\frac{1}{2}\mu_1^{MLE}\Sigma_{MLE}^{-1}\mu_1^{MLE} +\frac{1}{2}\mu_0^{MLE}\Sigma_{MLE}^{-1}\mu_0^{MLE}+ log\frac{\pi_1}{\pi_0}$$
 
 
 ### Naive Bayes (C=2)
@@ -415,5 +415,83 @@ $$f(y) \geqq f(x) + (y-x)^T\nabla f(x)$$
     - Cons
         - Multiple pass through dataset for each iteration -> __Stochastic gradient descent__
             - Can we appriximate expectation of gradient of samples (N) with partial dataset (S)
+
+- Stochastic Gradient Descent (SGD)
+
+Approximation of the expectation of __loss__
+$$\frac{1}{n}(\sum_{i=1}^N Li(\theta)) = \mathit{E}_{i\sim{1,...,n}}[Li(\theta)] = \frac{1}{|S|}\sum_{j\in S}][Li(\theta)]$$
+$$\sum_{i=1}^{n}Li(\theta) = \frac{n}{|s|}\sum_{j\in S}Lj(\theta)$$
+
+- SGD update
+$$\theta_{t+1} = \theta_t - \gamma \cdot \frac{n}{|s|}\sum_{j\in S} \nabla Li(\theta)$$
+
+- SGD convergence
+    - computational complexity in terms of single epoch is efficient
+    - But you need 10 steps for /10 updates
+$$K \sim \mathbf{E}(P^{-1})$$
+
+- GD update
+$$\theta_{t+1} = \theta_t - \gamma \cdot \sum_{i=1}^N\nabla Li(\theta)$$
+
+- GD convergence
+    - computational complexity in term of single epoch is inefficient
+    - But you only need 1 steo for /10 updates
+$$K \sim log[P]^{-1}$$
+
+## Hinge Loss
+- Only yupdate for misclassification case
+$$\mathit{L}(u, v) = max(0, \epsilon - u \cdot v)$$
+- if $uv \leqq \epsilon$ (misclassified), provide loss otherwise 0
+- Hinge loss + Binary classification with $\gamma = \frac{1}{N}$ => Perceptron
+    - binary classification [-1, 1]
+
+## Newton's method
+- Second-order gradient descent
+- Taylor expansion of f at point $\theta_t$
+$$f(\theta_t + \delta) = f(\theta_t) + \delta^T\nabla(f(\theta_t)) + \frac{1}{2}\delta^T\nabla^2f(\theta_t)\delta + O(\delta^3)$$
+
+$$f'(\theta_t + \delta) = \nabla(f(\theta_t)) + \nabla^2f(\theta_t)\delta != 0$$
+
+$$\delta = [\nabla^2f(\theta_t)^2]^{-1}\nabla f(\theta_t)$$
+
+- Drawbacks
+    - Hessian matrix costs to be calcurated.
+        - Approximation of hessian -> Gauss Newton
+
+## Levenberg-Marquardt algorithm
+- Interpolation between gradient descent and gauss newton
+
+$$2[\mathbf(J^TJ) + \lambda \mathbf{I}]\delta = \mathbf{J}^T[y- f(\beta)]$$
+
+## Deep Learning
+- Back propagation of Affine Layer
+$$\alpha = \mathbf{X}\mathbf{W} + \mathbf{b} = \mathbf{XW} + \mathbf{I_N}\mathbf{b}$$
+
+- gradients
+$$\frac{dE}{d\mathbf{W}} = \mathbf{X}^T\frac{dE}{d\mathbf{\alpha}}$$
+$$\frac{dX}{d\mathbf{X}} = \frac{dE}{d\mathbf{\alpha}}\mathbf{W}^T$$
+$$\frac{dX}{d\mathbf{b}} = \mathbf{I_N}^T\frac{dE}{d\mathbf{\alpha}}$$
+
+### Xavier Initialization
+- Not to vanish gradient and keep inputs distribution to the last layer
+
+Where $\mathbf{W}$ is initialized $Uniform(-\alpha, \alpha)$ with $Var(\mathbf{W}) = \frac{2}{fan_in + fan_out}$
+
+$f(x) \sim Uniform(x| -\alpha, \alpha) = \frac{1}{2\alpha}$ if $x \in [-\alpha, \alpha]$ otherwise 0
+
+variance of uniform distribution
+
+$$var(\mathbf{W}) = \int_{-\alpha}^{\alpha} x^2f(x)dx  = \frac{1}{3}\alpha^3$$
+
+$$\frac{1}{3}\alpha^2 = \frac{2}{fan_{in} + fan_{out}}, \alpha = \pm\sqrt{\frac{6}{fan_{in} + fan_{out}}}$$
+
+### Other techniques
+- The output layer for regression tasks is usually best initialized taking into account the target scale
+- Few-shot learning
+    - Meta learning for the initial weights to enable a model to adapt to different tasks with few training example
+    - Batch normalization (Numerical stability)
+        - $\epsilon$ is small enough number not to perform devision by zero
+        $$\hat{x_k} = \frac{\hat{x_k} - E[x_k]}{\sqrt{var[x_k]} + \epsilon}$$
+
 
 
