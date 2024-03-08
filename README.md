@@ -10,8 +10,6 @@
     - Support Vector Machine
 
 # Theoretical Summary
-## Tasks
-- Check the definition of Bias and Variance 
 ## Machine Learning
 - Bias (How far from the ground truth)
     - __High-Bias__: All predictions of samples are off from ground truth
@@ -34,7 +32,7 @@
 # K-nearest neighbor (Low bias and High variance)
 - KNN (more robust compared to 1NN)
     - Profile
-        - Expensive memory and native inference
+        - Expensive memory and naive inference
         - Can not apply to huge dataset (Data structure)
             - Use tree-based search structure (kd-tree)
         - We should have small feature attirbutes but enough samples
@@ -45,7 +43,7 @@ $$P(y=c | \mathbf{x}, k) = \frac{1}{K}\sum_{j\in N_k(\mathbf{x})} I(y_j = c)$$
 $$\hat{y_i} = argmax_c P(y_i=c| \mathbf{x_i}, k)$$
 
 - Weighted KNN (More robust compared to KNN)
-    - Sample which is far away from x, it will be accouonted less.
+    - Sample which is far away from x, it will be accounted less.
     - Sample which is close to x, it will be accounted more.
 
 $$P(y=c|\mathbf{x}, k) = \frac{1}{z}\sum_{j\in N_k(x)} \frac{1}{d(\mathbf{x}, \mathbf{x_j})} y_j$$
@@ -63,23 +61,28 @@ $$\hat{y} = \frac{1}{z} \sum_{j \in N_k(\mathbf{x})} \frac{1}{d(\mathbf{x}, \mat
         | y_pred = 0    | True negative | False negative |
     - Accuracy 
         $$\frac{TP+TN}{TP + FP + TN + FN}$$
-    - __Recall__
+    - __Recall__: about true samples
         $$\frac{TP}{TP + TN}$$
-    - __Precision__
+    - __Precision__: about true predictions
         $$\frac{TP}{TP + FP}$$
     - F1 score
         $$\frac{2(Recall * Precision)}{Recall + Precision}$$
     - Ex: Where numerous candidates are there, we want to give a candidate to the suitable position
-        - Since we have numerous candidates, we want to assign hire a candidate efficiently. To do so, we need to avoid to have many samples from False Positive.
-        - In this case, it is better to prioritise Precision rather than recall 
+        - Since we have numerous candidates, we want to hire a candidate efficiently. To do so, we need to avoid to have many samples from False Positive.
+        - In this case, it is better to prioritise **Precision** rather than **recall** 
 - Distance measurement
     $$L_{\inf \text{Norm}} = max_i|u_i - v_i|$$
-    $$\text{Mahalarobis} = \sqrt{(u-v)^T\Sigma^{-1}(u-v)}$$
+    - unit variance
+      $$\text{Euclidean} = \sqrt{(u-v)^T(u-v)}$$
+    - unit-less
+      $$\text{Mahalarobis} = \sqrt{(u-v)^T\Sigma^{-1}(u-v)}$$
+        - where $\Sigma = I$, each principle component has unit variance, equivalent with euclidean
+    
+    - Standarization: scale each feature to zero mean and unit variance (This should be done before applying KNN)
+    $$x_{i, std} = \frac{x_i - \mu_i}{\sigma_i}$$
 
-- Standarization: scale each feature to zero mean and unit variance (This should be done before applying KNN)
-$$x_{i, std} = \frac{x_i - \mu_i}{\sigma_i}$$
-
-- As features dimensionality gets higher, we need exponentially increased amount of sample to get sufficient sample density for explanation of the data and neighbors will be far away
+- Curse of dimensionality
+    - As features dimensionality gets higher, we need exponentially increased amount of sample to get sufficient sample density for explanation of the data and neighbors will be far away
 
 # Decision tree
 - DT is much smaller complexity with respect to memory and storage for inference
