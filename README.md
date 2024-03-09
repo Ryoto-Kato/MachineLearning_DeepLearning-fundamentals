@@ -85,15 +85,16 @@ $$\hat{y} = \frac{1}{z} \sum_{j \in N_k(\mathbf{x})} \frac{1}{d(\mathbf{x}, \mat
     - As features dimensionality gets higher, we need exponentially increased amount of sample to get sufficient sample density for explanation of the data and neighbors will be far away
 
 # Decision tree
-- DT is much smaller complexity with respect to memory and storage for inference
-- More flexible decision function
+- DT is much smaller auxiliary complexity for inference
+- More flexible decision function (Much more generality, less specificity)
 - Overfitting with DT
     - Where __imparity__ $i(t)$ is eual to zero
+        - Imparity: The probability of which a sample is classified into the different classes from a majority
 - Regularization
     - Post prunning
         
         0. We have DT $T$
-        1. Use validation data set to get erro estimate err(T)
+        1. Use validation data set to get error estimate err(T)
         2. Obtain error $err(T-T_t)$
             - $T-T_t$ is prunned DT which prunes $T_t$ from T
         3. Improvement of imparity
@@ -102,22 +103,23 @@ $$\hat{y} = \frac{1}{z} \sum_{j \in N_k(\mathbf{x})} \frac{1}{d(\mathbf{x}, \mat
     
     - Bagging (Boostrap aggregating)
         - Random forest
-        - Multiple DT tranined on different dataset (mini-batch) using only randomly selected set of features
+            - Multiple DT tranined on different dataset (mini-batch) using only randomly selected set of features
         - The number of features
             - $log_{2}d$ for regression
             - $\sqrt{d}$ for classification
 
-Label prediction is based on the majority in the partition
+- Label prediction is based on the majority in the partition at a leaf
 $$P(y = c| \mathbf{x}, \mathbf{R}) = \frac{\eta_{c, R}}{\sum_{c' \in c} \eta_{c', R}}$$
 
-Prediction will be
+- Prediction will be
 $$\hat{y} = argmax_c P(y=c|\mathbf{x}, \mathbf{R})$$
 
-- Naive decision tree construction consts expensive
-- Building the optimal decision tree is interactable using __greedy heuristic__
-    - How much spilit $t$ can improve the imparity at children imparity.
+    - Naive decision tree construction consts expensive
+    - Building the optimal decision tree is interactable using __greedy heuristic__
+        - How much spilit $t$ can improve the imparity at children imparity.
 
-- Imparity measurement ($\pi_c = P(y = c, \mathbf{x}, t)$)
+- Imparity measurement
+$$\pi_{c} = P(y = c| \mathbf{x}, t)$$
     1. Misclassification rate
     $$i_{E(t)} = 1 - \text{max}\pi_c$$
     2. Entropy
@@ -127,9 +129,9 @@ $$\hat{y} = argmax_c P(y=c|\mathbf{x}, \mathbf{R})$$
 
 - Imparity improvement
 
-where $P_L$ and $P_R$ are probability how much samples are assigned into the partition from the parent nodes
+where $P_L$ and $P_R$ are probability how much samples are assigned into the each L/R (child) decision node from the parent node
 
-$$\Delta i(s, t) = i(t) - (P_L*i(t_L)+P_R*i(t_R))$$
+$$\Delta i(s, t) = i(t) - (P_L \cdot i(t_L)+P_R \cdot i(t_R))$$
 
 # Probabilistic inference (Toy example)
 - Probabilistic distribution
